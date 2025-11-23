@@ -4,7 +4,6 @@
   "author": "JavaSkrrt",
   "module": "index.ts",
   "type": "module",
-  "private": false,
   "bin": "./dist/index.js",
   "scripts": {
     "build": "bun build ./src/index.ts --outdir ./dist --target node",
