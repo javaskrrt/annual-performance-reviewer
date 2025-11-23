@@ -1,8 +1,11 @@
 {
-  "name": "annual-performance-reviewer",
+  "name": "@javaskrrt/annual-performance-reviewer",
+  "version": "1.0.0",
+  "author": "JavaSkrrt",
   "module": "index.ts",
   "type": "module",
-  "private": true,
+  "private": false,
+  "bin": "./dist/index.js",
   "scripts": {
     "build": "bun build ./src/index.ts --outdir ./dist --target node",
     "dev": "bun ./src/index.ts"
