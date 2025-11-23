@@ -1,15 +1,14 @@
-# annual-performance-reviewer
+# @javaskrrt/annual-performance-reviewer
 
-To install dependencies:
+Overhwhelmed by the idea of completing your annual performance review as a software engineer?
 
-```bash
-bun install
-```
+Use your git commits!
 
-To run:
+## How to use
 
-```bash
-bun run index.ts
-```
+1. Navigate to the directory where all of your projects live
+1. Run the command `npx @javaskrrt/annual-performance-reviewer`
+1. You will be prompted to choose which email(s) you'd like to filter by (helpful for if you've contributed across multiple repos using different git accounts/emails)
+1. Click "run"
 
-This project was created using `bun init` in bun v1.3.0. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+The script will run an analysis on all of your git commits, synthesizing all of this information into simple answers that you can use in your annual performance reviews assessment.

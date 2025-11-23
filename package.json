@@ -1,12 +1,10 @@
 {
   "name": "@javaskrrt/annual-performance-reviewer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "JavaSkrrt",
   "module": "index.ts",
   "type": "module",
-  "bin": {
-    "@javaskrrt/annual-performance-reviewer": "./dist/index.js"
-  },
+  "bin": "./dist/index.js",
   "scripts": {
     "build": "bun build ./src/index.ts --outdir ./dist --target node",
     "dev": "bun ./src/index.ts"
