@@ -4,7 +4,9 @@
   "author": "JavaSkrrt",
   "module": "index.ts",
   "type": "module",
-  "bin": "./dist/index.js",
+  "bin": {
+    "@javaskrrt/annual-performance-reviewer": "./dist/index.js"
+  },
   "scripts": {
     "build": "bun build ./src/index.ts --outdir ./dist --target node",
     "dev": "bun ./src/index.ts"
