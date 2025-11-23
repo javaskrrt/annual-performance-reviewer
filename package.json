@@ -1,0 +1,21 @@
+{
+  "name": "annual-performance-reviewer",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir ./dist --target node",
+    "dev": "bun ./src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@types/prompts": "^2.4.9",
+    "commander": "^14.0.2",
+    "prompts": "^2.4.2"
+  }
+}
