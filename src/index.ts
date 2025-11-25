@@ -63,42 +63,47 @@ async function main() {
   const selectedEmails: string[] = emailPrompt.selected;
   console.log(`\nFiltering by: ${selectedEmails.join(", ")}\n`);
 
-  // 4) Confirm continue
+  // 4) Pre-fetch commits to show count in confirmation
+  const spinner = ora("Analyzing commits...").start();
+  const allCommits = await collectCommits(repos);
+  const filtered = allCommits.filter((c) =>
+    selectedEmails
+      .map((e) => e.toLowerCase())
+      .includes(c.authorEmail.toLowerCase())
+  );
+
+  if (filtered.length === 0) {
+    spinner.fail("No matching commits found for the selected email(s).");
+    process.exit(1);
+  }
+
+  spinner.succeed(`Found ${filtered.length} commit(s) matching your email(s)`);
+  console.log("");
+
+  // 5) Get OpenAI API key before confirmation
+  const userKey = await getUserOpenAIKey(cliOpenAIKey);
+
+  // 6) Confirm with detailed message
   const confirmPrompt = await prompts({
     type: "confirm",
     name: "ok",
-    message: "Ready to synthesize your performance review?",
+    message: `Ready to generate your performance review? This will:\n  • Process ${filtered.length} commit(s) from ${repos.length} repo(s)\n  • Send commit data to OpenAI (gpt-4.1-mini)\n  • Generate a draft self-assessment based on your work\n\n  Proceed?`,
     initial: true
   });
 
   if (!confirmPrompt.ok) {
-    console.log("👍 Exiting.");
+    console.log("Cancelled. No API calls were made.");
     process.exit(0);
   }
 
-  // 5) Process commits + call OpenAI
-  const spinner = ora("Processing commits...").start();
+  // 7) Process and call OpenAI
+  const apiSpinner = ora("Generating your performance review...").start();
 
   try {
-    const allCommits = await collectCommits(repos);
-    const filtered = allCommits.filter((c) =>
-      selectedEmails
-        .map((e) => e.toLowerCase())
-        .includes(c.authorEmail.toLowerCase())
-    );
-
-    if (filtered.length === 0) {
-      spinner.fail("No matching commits found for the selected email(s).");
-      process.exit(1);
-    }
-
     const consolidatedText = toConsolidatedText(filtered);
     const outPath = join(root, "javaskrrt_commits.txt");
     await writeFile(outPath, consolidatedText, "utf8");
 
-    spinner.text = "Calling OpenAI with your API key...";
-
-    const userKey = await getUserOpenAIKey(cliOpenAIKey);
     const openai = new OpenAI({ apiKey: userKey });
 
     const response = await openai.responses.create({
@@ -125,13 +130,13 @@ ${consolidatedText}
       ]
     });
 
-    spinner.succeed("Done!");
+    apiSpinner.succeed("Done!");
 
     console.log("\n📣 Performance Review Output:\n");
     console.log(response.output_text);
     console.log("\n👋 Exiting.\n");
   } catch (err) {
-    spinner.fail("Failed.");
+    apiSpinner.fail("Failed.");
     console.error((err as Error).message);
     process.exit(1);
   }
