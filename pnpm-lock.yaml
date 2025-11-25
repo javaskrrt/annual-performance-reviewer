@@ -8,9 +8,12 @@ importers:
 
   .:
     dependencies:
-      '@types/prompts':
-        specifier: ^2.4.9
-        version: 2.4.9
+      inquirer:
+        specifier: ^13.0.1
+        version: 13.0.1(@types/node@22.19.1)
+      ora:
+        specifier: ^9.0.0
+        version: 9.0.0
       typescript:
         specifier: ^5
         version: 5.9.3
@@ -18,12 +21,6 @@ importers:
       '@types/node':
         specifier: ^22.0.0
         version: 22.19.1
-      inquirer:
-        specifier: ^13.0.1
-        version: 13.0.1(@types/node@22.19.1)
-      ora:
-        specifier: ^9.0.0
-        version: 9.0.0
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.19.1)(typescript@5.9.3)
@@ -193,9 +190,6 @@ packages:
   '@types/node@22.19.1':
     resolution: {integrity: sha512-LCCV0HdSZZZb34qifBsyWlUmok6W7ouER+oQIGBScS8EsZsQbrtFTUrDX4hOl+CS6p7cnNC4td+qrSVGSCTUfQ==}
 
-  '@types/prompts@2.4.9':
-    resolution: {integrity: sha512-qTxFi6Buiu8+50/+3DGIWLHM6QuWsEKugJnnP6iv2Mc4ncxE4A/OJkjuVOA+5X0X1S/nq5VJRa8Lu+nwcvbrKA==}
-
   acorn-walk@8.3.4:
     resolution: {integrity: sha512-ueEepnujpqee2o5aIYnvHU6C0A42MNdsIDeqy5BydrkuC5R1ZuUFnm27EeFJGoEHJQgn3uleRvmTXaJgfXbt4g==}
     engines: {node: '>=0.4.0'}
@@ -269,10 +263,6 @@ packages:
   is-unicode-supported@2.1.0:
     resolution: {integrity: sha512-mE00Gnza5EEB3Ds0HfMyllZzbBrmLOX3vfWoj9A9PEnTfratQ/BcaJOuMhnkhjXvb2+FkY3VuHqtAGpTPmglFQ==}
     engines: {node: '>=18'}
-
-  kleur@3.0.3:
-    resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
-    engines: {node: '>=6'}
 
   log-symbols@7.0.1:
     resolution: {integrity: sha512-ja1E3yCr9i/0hmBVaM0bfwDjnGy8I/s6PP4DFp+yP+a+mrHO4Rm7DtmnqROTUkHIkqffC84YY7AeqX6oFk0WFg==}
@@ -517,11 +507,6 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
-  '@types/prompts@2.4.9':
-    dependencies:
-      '@types/node': 22.19.1
-      kleur: 3.0.3
-
   acorn-walk@8.3.4:
     dependencies:
       acorn: 8.15.0
@@ -573,8 +558,6 @@ snapshots:
   is-interactive@2.0.0: {}
 
   is-unicode-supported@2.1.0: {}
-
-  kleur@3.0.3: {}
 
   log-symbols@7.0.1:
     dependencies:
