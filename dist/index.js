@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import inquirer from "inquirer";
+import prompts from "prompts";
 import ora from "ora";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
@@ -25,25 +25,21 @@ async function main() {
         process.exit(1);
     }
     // Multi-select with arrows/space/enter
-    const { selectedEmails } = await inquirer.prompt([
-        {
-            type: "checkbox",
-            name: "selectedEmails",
-            message: "Select the git email(s) to filter commits by:",
-            choices: emails.map((e) => ({ name: e, value: e })),
-            validate: (arr) => arr.length > 0 || "Select at least one email to continue."
-        }
-    ]);
+    const { selectedEmails } = await prompts({
+        type: "multiselect",
+        name: "selectedEmails",
+        message: "Select the git email(s) to filter commits by:",
+        choices: emails.map((e) => ({ title: e, value: e })),
+        hint: "- Space to select, Enter to confirm",
+        min: 1
+    });
     console.log(`\nFiltering by: ${selectedEmails.join(", ")}\n`);
     // 3) Confirm ready to synthesize
-    const { confirmContinue } = await inquirer.prompt([
-        {
-            type: "confirm",
-            name: "confirmContinue",
-            message: "Ready to synthesize your performance review from these commits?",
-            default: true
-        }
-    ]);
+    const { confirmContinue } = await prompts({
+        type: "confirm",
+        name: "confirmContinue",
+        message: "Ready to synthesize your performance review from these commits?"
+    });
     if (!confirmContinue) {
         console.log("👍 Okay, exiting.");
         process.exit(0);

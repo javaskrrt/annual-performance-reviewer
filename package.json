@@ -1,6 +1,6 @@
 {
   "name": "@javaskrrt/annual-performance-reviewer",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "author": "JavaSkrrt",
   "module": "index.ts",
   "type": "module",
@@ -18,7 +18,8 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "inquirer": "^13.0.1",
-    "ora": "^9.0.0"
+    "@types/prompts": "^2.4.9",
+    "ora": "^9.0.0",
+    "prompts": "^2.4.2"
   }
 }
