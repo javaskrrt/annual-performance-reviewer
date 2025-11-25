@@ -1,4 +1,5 @@
 import { Commit } from "./types";
+import { spawn } from "child_process";
 
 const GIT_PRETTY_FORMAT = [
   "%H", // hash
@@ -13,22 +14,39 @@ const COMMIT_SEPARATOR = "\n---JAVASKRRT_COMMIT_SEPARATOR---\n";
 
 /** Run a git command in a directory. */
 export async function git(repoPath: string, args: string[]): Promise<string> {
-  const proc = Bun.spawn(["git", ...args], {
-    cwd: repoPath,
-    stdout: "pipe",
-    stderr: "pipe"
+  return new Promise((resolve, reject) => {
+    const proc = spawn("git", args, {
+      cwd: repoPath,
+      stdio: ["ignore", "pipe", "pipe"]
+    });
+
+    let stdout = "";
+    let stderr = "";
+
+    proc.stdout.on("data", (data) => {
+      stdout += data.toString();
+    });
+
+    proc.stderr.on("data", (data) => {
+      stderr += data.toString();
+    });
+
+    proc.on("close", (exitCode) => {
+      if (exitCode !== 0) {
+        reject(
+          new Error(
+            `git ${args.join(" ")} failed in ${repoPath}:\n${stderr || stdout}`
+          )
+        );
+      } else {
+        resolve(stdout.trim());
+      }
+    });
+
+    proc.on("error", (err) => {
+      reject(err);
+    });
   });
-
-  const stdout = await new Response(proc.stdout).text();
-  const stderr = await new Response(proc.stderr).text();
-  const exitCode = await proc.exited;
-
-  if (exitCode !== 0) {
-    throw new Error(
-      `git ${args.join(" ")} failed in ${repoPath}:\n${stderr || stdout}`
-    );
-  }
-  return stdout.trim();
 }
 
 /** Check if a folder is a git repo. */

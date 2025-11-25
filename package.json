@@ -1,23 +1,25 @@
 {
   "name": "@javaskrrt/annual-performance-reviewer",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "JavaSkrrt",
   "module": "index.ts",
   "type": "module",
   "bin": "./dist/index.js",
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir ./dist --target node",
-    "dev": "bun ./src/index.ts"
+    "prepublishOnly": "pnpm build",
+    "build": "tsc -p tsconfig.json",
+    "dev": "node --loader ts-node/esm src/index.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/node": "^22.0.0",
+    "inquirer": "^13.0.1",
+    "ora": "^9.0.0",
+    "ts-node": "^10.9.2"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
-    "@types/prompts": "^2.4.9",
-    "commander": "^14.0.2",
-    "prompts": "^2.4.2"
+    "@types/prompts": "^2.4.9"
   }
 }

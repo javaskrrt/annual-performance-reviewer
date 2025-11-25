@@ -1,18 +1,24 @@
 import { isGitRepo, getCommits } from "./git";
 import { Commit } from "./types";
 import { basename, join } from "path";
+import { readdir } from "fs/promises";
 
 /** List immediate subdirectories in a root folder. */
 async function listSubdirs(root: string): Promise<string[]> {
-  const entries = (await Bun.file(root).exists())
-    ? await Array.fromAsync(
-        new Bun.Glob("*").scan({ cwd: root, onlyFiles: false })
-      )
-    : [];
+  try {
+    const entries = await readdir(root, { withFileTypes: true });
 
-  return entries
-    .map((p) => join(root, p))
-    .filter((p) => !p.includes("node_modules") && !p.includes(".git"));
+    const subdirs = await Promise.all(
+      entries
+        .filter((entry) => entry.isDirectory())
+        .filter((entry) => !entry.name.includes("node_modules") && entry.name !== ".git")
+        .map((entry) => join(root, entry.name))
+    );
+
+    return subdirs;
+  } catch {
+    return [];
+  }
 }
 
 /** Scan all git repos under root (1 level deep). */
